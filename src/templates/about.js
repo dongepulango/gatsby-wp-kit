@@ -8,6 +8,7 @@ import { rem } from 'polished';
 import SEO from 'components/utils/seo';
 import Layout from 'components/ui/layout';
 import Container from 'components/ui/container';
+import Image from 'components/ui/image';
 import Heading from 'components/ui/heading';
 //grid
 import { Row, Col } from 'styled-bootstrap-grid';
@@ -78,7 +79,7 @@ const About = ({ data:{ wordPress } }) => {
           <AboutPeople>
             {wordPress.page.aboutPage.aboutImages.map((item) => (
               <li key={item.id}>
-                <img src={item.mediaItemUrl} alt={item.title}/>
+                <Image fixed={item.imageFile.childImageSharp.fixed} center />
               </li>
             ))}
           </AboutPeople>
@@ -112,8 +113,14 @@ export const query = graphql`
           aboutText2
           aboutImages {
             id
-            mediaItemUrl
-            title
+            sourceUrl
+            imageFile {
+              childImageSharp {
+                fixed(width: 100) {
+                  ...GatsbyImageSharpFixed
+                }
+              }
+            }
           }
         }
       }

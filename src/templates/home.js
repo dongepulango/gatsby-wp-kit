@@ -8,7 +8,7 @@ import { rem } from 'polished';
 import SEO from 'components/utils/seo';
 import Layout from 'components/ui/layout';
 import Container from 'components/ui/container';
-// import Image from 'components/ui/image';
+import Image from 'components/ui/image';
 import Heading from 'components/ui/heading';
 import Button from 'components/ui/button';
 //grid
@@ -29,10 +29,6 @@ const HomeHero = styled.div`
   text-align: center;
   .image-wrap {
     margin-bottom: 40px;
-    img {
-      max-width: 100px;
-      height: auto;
-    }
   }
   ${Heading} {
     font-weight: bold;
@@ -49,10 +45,6 @@ const HomeContent = styled.div`
   position: relative;
   padding-top: ${rem('100px')};
   padding-bottom: ${rem('100px')};
-  img {
-    max-width: 400px;
-    height: auto;
-  }
 `;
 
 const Home = ({ data: { wordPress, site } }) => {
@@ -63,7 +55,7 @@ const Home = ({ data: { wordPress, site } }) => {
         <HomeHero>
           <Container>
             <div className="image-wrap">
-              <img src={wordPress.page.homePage.homeIcon.mediaItemUrl} alt="Icon"/>
+              <Image fluid={wordPress.page.homePage.homeIcon.imageFile.childImageSharp.fluid} center />
             </div>
             <Heading heading1>{site.siteMetadata.title}</Heading>
             <p>{site.siteMetadata.description}</p>
@@ -73,7 +65,7 @@ const Home = ({ data: { wordPress, site } }) => {
           <Container>
             <Row>
               <Col md={6}>
-                <img src={wordPress.page.homePage.homeImage.mediaItemUrl} alt="Icon" />
+                <Image fluid={wordPress.page.homePage.homeImage.imageFile.childImageSharp.fluid} center />
               </Col>
               <Col md={6}>
                 <div dangerouslySetInnerHTML={{ __html: wordPress.page.homePage.homeText }}></div>
@@ -100,10 +92,28 @@ export const query = graphql`
         slug
         homePage {
           homeIcon {
-            mediaItemUrl
+            sourceUrl
+            imageFile {
+              childImageSharp {
+                fluid(maxWidth: 100) {
+                  ...GatsbyImageSharpFluid
+                  src
+                  presentationWidth
+                }
+              }
+            }
           }
           homeImage {
-            mediaItemUrl
+            sourceUrl
+            imageFile {
+              childImageSharp {
+                fluid(maxWidth: 400) {
+                  ...GatsbyImageSharpFluid
+                  src
+                  presentationWidth
+                }
+              }
+            }
           }
           homeText
         }
